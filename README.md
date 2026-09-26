@@ -2,9 +2,13 @@
 
 Gelato Hunting is a small 2D mobile arcade game made in Unity. Ice cream scoops fall from the top of the screen and you move a cup left and right to catch them. Missed scoops cost a life. Special scoops double the score, grow or shrink the cup, or slow time. Earned coins buy new cups and backgrounds in an in-game store. The project was built for Android and iOS under the team name "Guacamole".
 
-This repository holds the Unity project (assets, scenes, scripts and settings). It does not contain a built game.
+This repository holds the Unity project (assets, scenes, scripts and settings). A ready-to-play Windows build is on the Releases page.
 
-The project was first made with Unity 5.4 and last saved with Unity 2018.2.9f1. In September 2026 it was upgraded to Unity 6 (**6000.6.3f1**, the latest stable release at the time). It compiles with no errors, and a Windows player builds and starts. It was not played by hand after the upgrade.
+The project was first made with Unity 5.4 and last saved with Unity 2018.2.9f1. In September 2026 it was upgraded to Unity 6 (**6000.6.3f1**, the latest stable release at the time). It compiles with no errors, and the Windows build was played after the upgrade.
+
+## Download
+
+Get `GelatoHunting-v1.0.0-windows-x64.zip` from the [Releases page](https://github.com/sleousis/Gelato-Hunting/releases). Extract it anywhere and run `Gelato Hunting.exe`. It needs 64-bit Windows 10 or 11. Hold the left mouse button in the lower part of the window and move the mouse to steer the cup. To play in a phone-shaped window, start it from a command prompt with `"Gelato Hunting.exe" -screen-fullscreen 0 -screen-width 540 -screen-height 960`.
 
 ## Contents
 
@@ -88,7 +92,7 @@ Controls: hold the left mouse button (or touch the screen) in the lower part of 
 
 ## Notes and known limitations
 
-- **Limited testing.** The project compiles and a Windows player builds and starts. Nobody played the game by hand after the upgrade, and the Android and iOS builds were not tried.
+- **Testing.** The Windows build was played on Windows 11. The menu, Instructions, Store, High Scores and About screens open. Rounds start, scoops fall, missed scoops cost lives, Game Over and Retry work, and scores are saved to the high score table. The player log had no errors. The Android and iOS builds were not tried.
 - **Compiler warnings.** Unity 6 warns that `Object.FindObjectsOfType` (in `AI_PlayerController.cs`) and `Rigidbody2D.velocity` (in `RandomLerp.cs`) are obsolete. They still work, so the code was left as it was.
 - **Upgrade side effects.** Unity rewrote the texture `.meta` files, `ProjectSettings/` and `Packages/manifest.json` for the new version. It removed `UnityAdsSettings.asset`. The Ads, Analytics and Purchasing packages jumped several major versions. The game code does not call them, but the Unity services they need were not set up or tested.
 - **Old settings copy.** `Assets/ProjectSettings/` is a leftover copy of settings from Unity 5.4.0f3. Unity ignores it. It was kept as it was.
