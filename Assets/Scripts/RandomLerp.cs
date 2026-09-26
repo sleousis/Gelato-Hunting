@@ -21,11 +21,11 @@ public class RandomLerp : MonoBehaviour
 		}
 		if (changedirection) {
 			temp = new Vector2 (x, y).normalized*speed;
-			GetComponent<Rigidbody2D> ().velocity = temp;
+			GetComponent<Rigidbody2D> ().linearVelocity = temp;
 			changedirection = !changedirection;
 		}
 		else {
-			GetComponent<Rigidbody2D> ().velocity = -temp;
+			GetComponent<Rigidbody2D> ().linearVelocity = -temp;
 			changedirection = !changedirection;
 		}
 	}

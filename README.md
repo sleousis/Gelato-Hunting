@@ -4,7 +4,7 @@ Gelato Hunting is a small 2D mobile arcade game made in Unity. Ice cream scoops 
 
 This repository holds the Unity project (assets, scenes, scripts and settings). It does not contain a built game.
 
-> **Not run in Unity.** During the 2026 maintenance pass the Unity Editor was not installed. The project was not opened, compiled or played. The scripts were only checked by reading them.
+The project was first made with Unity 5.4 and last saved with Unity 2018.2.9f1. In September 2026 it was upgraded to Unity 6 (**6000.6.3f1**, the latest stable release at the time). It compiles with no errors, and a Windows player builds and starts. It was not played by hand after the upgrade.
 
 ## Contents
 
@@ -15,9 +15,9 @@ This repository holds the Unity project (assets, scenes, scripts and settings). 
 
 ## Tech stack
 
-- Unity **2018.2.9f1** (from `ProjectSettings/ProjectVersion.txt`)
-- C# scripts only. `Assets/Small particle pack/TimedObjectDestructor.cs` was ported from UnityScript (`.js`) in 2026 with the same GUID and fields, so the confetti prefab still points at it
-- Unity packages pinned in `Packages/manifest.json` (TextMesh Pro 1.2.4, Ads 2.0.8, Analytics 2.0.16, Purchasing 2.0.3 and the built-in modules)
+- Unity **6000.6.3f1** (changeset 45d8eee7de74), set in `ProjectSettings/ProjectVersion.txt`. Before 2026 it was 2018.2.9f1.
+- C# scripts only. `Assets/Small particle pack/TimedObjectDestructor.cs` was ported from UnityScript (`.js`) in 2026 with the same GUID and fields, so the confetti prefab still points at it. Unity 6 no longer compiles UnityScript.
+- Unity packages pinned in `Packages/manifest.json` and `Packages/packages-lock.json`. The upgrade moved them to the versions Unity 6000.6.3f1 picks: Ads 4.19.0, Analytics 3.8.2, Purchasing 4.15.0, uGUI 2.6.0 (which now contains TextMesh Pro) and the built-in modules.
 - Target platforms in the project settings: Android (min SDK 16) and iOS
 
 ## Repository layout
@@ -34,36 +34,63 @@ Assets/
   Simple Scene Fader/   third-party scene fade helper
   Small particle pack/  third-party confetti particles
   ProjectSettings/      an old copy of project settings from Unity 5.4 (not used by the editor)
-Packages/manifest.json  Unity package list
+Packages/               manifest.json and packages-lock.json (Unity package list)
 ProjectSettings/        the real project settings
 ```
 
 ## Prerequisites
 
-- Unity Hub
-- Unity Editor **2018.2.9f1** (install it from the Unity download archive)
-- Android Build Support and/or iOS Build Support modules if you want to build for phones
+- Unity Hub (3.21.3 was used)
+- Unity Editor **6000.6.3f1**. Windows standalone (Mono) support is included with the Windows editor.
+- A Unity license. A free Personal license works. Sign in to Unity Hub and activate it before using batch mode.
+- Android Build Support or iOS Build Support modules only if you want to build for phones
 
 ## Setup
 
 1. Clone the repository.
 2. In Unity Hub choose "Add" (or "Open") and pick the repository folder.
-3. Open it with Unity 2018.2.9f1. Unity rebuilds the `Library/` folder and the `.csproj` and `.sln` files on first open. These are generated files and are ignored by git.
+3. Open it with Unity 6000.6.3f1. Unity rebuilds the `Library/` folder and the `.csproj` and `.slnx` files on first open. These are generated files and are ignored by git.
 
-## How to run (not verified)
+## Build from the command line
 
-These steps are the standard Unity workflow. They were not tried in this maintenance pass.
+These commands were run on Windows 11 (Git Bash) in September 2026. The editor was installed at `D:\Apps\Unity\6000.6.3f1`. Change the paths for your machine.
+
+Open (import and compile) the project in batch mode:
+
+```
+"D:/Apps/Unity/6000.6.3f1/Editor/Unity.exe" -batchmode -nographics -accept-apiupdate \
+  -projectPath "D:\Git\Gelato-Hunting" -logFile "D:\Git\Gelato-Hunting\Logs\upgrade.log" -quit
+```
+
+Result: exit code 0, no `error CS` lines in the log, and "Exiting batchmode successfully now!".
+
+Build a Windows 64-bit player into `Builds/Windows` (ignored by git):
+
+```
+"D:/Apps/Unity/6000.6.3f1/Editor/Unity.exe" -batchmode -nographics -projectPath "D:\Git\Gelato-Hunting" \
+  -buildTarget Win64 -buildWindows64Player "D:\Git\Gelato-Hunting\Builds\Windows\Gelato Hunting.exe" \
+  -logFile "D:\Git\Gelato-Hunting\Logs\build.log" -quit
+```
+
+Result: exit code 0 and "Build Finished, Result: Success." in the log.
+
+The built player was started once for 15 seconds with `"Builds/Windows/Gelato Hunting.exe" -batchmode -nographics -logFile Logs/player.log`. The log shows two scene loads (splash, then menu) and no exceptions or errors.
+
+On Linux or macOS the flags are the same. Use the path of the Unity binary on that system and `-buildTarget Linux64 -buildLinux64Player <path>` (not tried).
+
+## How to play in the editor (not verified)
 
 1. Open `Assets/_Scenes/splash.unity`.
-2. Press Play in the editor. The splash screen moves on to the menu, and "Play" loads the game scene.
-3. To build, open File > Build Settings. The three scenes are already listed in order (splash, menu, scene). Pick Android or iOS and build.
+2. Press Play. The splash screen moves on to the menu, and "Play" loads the game scene.
+3. To build for phones, open File > Build Profiles. The three scenes are listed in order (splash, menu, scene). Pick Android or iOS and build.
 
 Controls: hold the left mouse button (or touch the screen) in the lower part of the screen to move the cup. A right click saves a screenshot (a leftover debug feature).
 
 ## Notes and known limitations
 
-- **Not tested.** No Unity Editor was available. Nothing was compiled or run. Reading the C# scripts found no obvious compile errors for Unity 2018.2.
-- **Unity version.** The project was last saved with 2018.2.9f1. An upgrade to Unity 6 (6000.6.3f1, the latest stable release on 2026-09-26) is planned but not done yet. The Unity Editor could not be installed in this pass. Newer versions may need package upgrades in `Packages/manifest.json`.
+- **Limited testing.** The project compiles and a Windows player builds and starts. Nobody played the game by hand after the upgrade, and the Android and iOS builds were not tried.
+- **Compiler warnings.** Unity 6 warns that `Object.FindObjectsOfType` (in `AI_PlayerController.cs`) and `Rigidbody2D.velocity` (in `RandomLerp.cs`) are obsolete. They still work, so the code was left as it was.
+- **Upgrade side effects.** Unity rewrote the texture `.meta` files, `ProjectSettings/` and `Packages/manifest.json` for the new version. It removed `UnityAdsSettings.asset`. The Ads, Analytics and Purchasing packages jumped several major versions. The game code does not call them, but the Unity services they need were not set up or tested.
 - **Old settings copy.** `Assets/ProjectSettings/` is a leftover copy of settings from Unity 5.4.0f3. Unity ignores it. It was kept as it was.
 - **Scene paths.** The build settings list scenes as `assets/_Scenes/...` in lower case. This works on Windows. A case-sensitive file system may need them fixed in Build Settings.
 - **Signing.** The Android keystore is not in the repository. The settings point to a keystore path on another machine, so you need your own keystore to make a release build.
