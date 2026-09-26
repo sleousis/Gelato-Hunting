@@ -16,7 +16,7 @@ This repository holds the Unity project (assets, scenes, scripts and settings). 
 ## Tech stack
 
 - Unity **2018.2.9f1** (from `ProjectSettings/ProjectVersion.txt`)
-- C# scripts, plus one UnityScript file (`Assets/Small particle pack/TimedObjectDestructor.js`)
+- C# scripts only. `Assets/Small particle pack/TimedObjectDestructor.cs` was ported from UnityScript (`.js`) in 2026 with the same GUID and fields, so the confetti prefab still points at it
 - Unity packages pinned in `Packages/manifest.json` (TextMesh Pro 1.2.4, Ads 2.0.8, Analytics 2.0.16, Purchasing 2.0.3 and the built-in modules)
 - Target platforms in the project settings: Android (min SDK 16) and iOS
 
@@ -63,7 +63,7 @@ Controls: hold the left mouse button (or touch the screen) in the lower part of 
 ## Notes and known limitations
 
 - **Not tested.** No Unity Editor was available. Nothing was compiled or run. Reading the C# scripts found no obvious compile errors for Unity 2018.2.
-- **Unity version.** Use 2018.2.9f1. Newer Unity versions no longer compile UnityScript (`.js`) files, so `TimedObjectDestructor.js` (used by the confetti prefab) would need porting to C# there. Newer versions may also need package upgrades.
+- **Unity version.** The project was last saved with 2018.2.9f1. An upgrade to Unity 6 (6000.6.3f1, the latest stable release on 2026-09-26) is planned but not done yet. The Unity Editor could not be installed in this pass. Newer versions may need package upgrades in `Packages/manifest.json`.
 - **Old settings copy.** `Assets/ProjectSettings/` is a leftover copy of settings from Unity 5.4.0f3. Unity ignores it. It was kept as it was.
 - **Scene paths.** The build settings list scenes as `assets/_Scenes/...` in lower case. This works on Windows. A case-sensitive file system may need them fixed in Build Settings.
 - **Signing.** The Android keystore is not in the repository. The settings point to a keystore path on another machine, so you need your own keystore to make a release build.
